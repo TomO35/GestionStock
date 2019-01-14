@@ -1,0 +1,79 @@
+<table>
+	<thead>
+		<tr>
+			<th>
+				Nom
+			</th>
+			<th>
+				Fournisseur
+			</th>
+			<th>
+				Description
+			</th>
+			<th>
+				Ingrédients
+			</th>
+			<th>
+				Age
+			</th>
+			<th>
+				Condition de conservation
+			</th>
+			<th>
+				Prix
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let p of products">
+			<th style="text-align:left"> {{ p.nom | uppercase }} </th>
+			<th> {{ p.fournisseur }} <br> ({{ p.emailFournisseur }}) </th>
+			<th style="text-align:left"> {{ p.description | lowercase | slice:0:20 }}{{ p.description.length > 20 ? '...' : '' }}</th>
+			<th style="text-align:left">
+				<span *ngFor="let i of p.ingredients"> {{ i }}, </span>
+			</th>
+			<th> {{ p.age }} ans </th>
+			<th style="text-align:left"> {{ p.conditionConservation }} </th>
+			<th> {{ p.prix | number }} € </th>
+			<th>
+				<i class="far fa-trash-alt" (click)="delete(p)"></i>
+			</th>
+		</tr>
+	</tbody>
+</table>
+
+<br>
+<hr>
+<br>
+
+<div style="text-align:left">
+	<form (ngSubmit)="add()" [formGroup]="prodForm">
+		<div class="columns is-multiline">
+		
+			<div class="column is-3">
+			<div class="error" *ngIf="nom.dirty && nom.hasError('required')">Le nom est requis</div>
+			<label>Nom </label><input class="input" formControlName="nom">
+			</div>
+		
+			<div class="column is-3">
+			<div class="error" *ngIf="fournisseur.dirty && fournisseur.hasError('required')">Le fournisseur est requis</div>
+			<label>Fournisseur </label><input class="input" formControlName="fournisseur">
+			</div>
+		
+			<div class="column is-3">
+			<div class="error" *ngIf="age.dirty && age.hasError('required')">L'age est requis</div>
+			<label>Age </label><input class="input" type="number" formControlName="age">
+			</div>
+		
+			<div class="column is-3">
+			<div class="error" *ngIf="description.dirty && description.hasError('required')">La description est requise</div>
+			<label>Description </label><input class="input" formControlName="description">
+			</div>
+			
+		</div>
+		<button class="button" type="submit" [disabled]="prodForm.invalid">Enregistrer</button>
+	</form>  
+</div>
+
+<button class="button" (click)="reset()">Reset</button>
